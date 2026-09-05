@@ -1,62 +1,59 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ==============================================
-# MY TERMUX AUTOMATOR – v1.0
+# MY TERMUX AUTOMATOR – ULTIMATE EDITION v2.0
 # ==============================================
 
-show_menu() {
-    clear
-    echo "===================================="
-    echo "       MY TERMUX AUTOMATOR          "
-    echo "===================================="
-    echo "1. Install Developer Tools"
-    echo "2. Show System Info"
-    echo "3. Customize Terminal"
-    echo "4. Launch Jarvis Assistant"
-    echo "5. Exit"
-    echo "===================================="
-    read -p "Choose an option [1-5]: " choice
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_FILE="$SCRIPT_DIR/logs/automator.log"
+
+# --- Logging function ---
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
 }
 
+# --- Source all modules ---
+for mod in "$SCRIPT_DIR"/modules/*.sh; do
+    if [ -f "$mod" ]; then
+        source "$mod"
+        log "Loaded module: $(basename "$mod")"
+    fi
+done
+
+# --- Main menu ---
+show_main_menu() {
+    clear
+    echo "╔═══════════════════════════════════════════════╗"
+    echo "║   MY TERMUX AUTOMATOR – ULTIMATE EDITION     ║"
+    echo "╠═══════════════════════════════════════════════╣"
+    echo "║  1. System Info & Maintenance                ║"
+    echo "║  2. Development Tools                        ║"
+    echo "║  3. Networking Tools                         ║"
+    echo "║  4. Security & Privacy                       ║"
+    echo "║  5. Terminal Customization                   ║"
+    echo "║  6. Automation & Scheduling                  ║"
+    echo "║  7. Hardware Control (Termux:API)            ║"
+    echo "║  8. Jarvis Integration                       ║"
+    echo "║  9. File & Media Utilities                   ║"
+    echo "║  0. Exit                                     ║"
+    echo "╚═══════════════════════════════════════════════╝"
+    read -p "Choose an option [0-9]: " main_choice
+}
+
+# --- Sub‑menus (each calls a function from the respective module) ---
 while true; do
-    show_menu
-    case $choice in
-        1)
-            echo "Installing Python, Node.js, Git..."
-            pkg update -y && pkg install python nodejs git -y
-            echo "✅ Done."
-            read -p "Press Enter to continue..."
-            ;;
-        2)
-            echo "Device Info:"
-            pkg install termux-api -y 2>/dev/null
-            termux-battery-status
-            echo "IP: $(ifconfig wlan0 2>/dev/null | grep 'inet ' | awk '{print $2}')"
-            read -p "Press Enter to continue..."
-            ;;
-        3)
-            echo "Customizing terminal..."
-            mkdir -p ~/.termux
-            cat > ~/.termux/termux.properties << 'EOF'
-extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]
-use-black-ui = true
-EOF
-            termux-reload-settings
-            echo "✅ Terminal customized (dark theme + extra keys)."
-            read -p "Press Enter to continue..."
-            ;;
-        4)
-            echo "Launching Jarvis (RehanIlyas)..."
-            cd ~/jarvis-mega-repo/assistants/RehanIlyas-JARVIS && python main.py || echo "Error: Repo not found or missing dependencies."
-            read -p "Press Enter to continue..."
-            ;;
-        5)
-            echo "Goodbye!"
-            exit 0
-            ;;
-        *)
-            echo "Invalid choice."
-            read -p "Press Enter to continue..."
-            ;;
+    show_main_menu
+    case $main_choice in
+        1) menu_core ;;
+        2) menu_dev ;;
+        3) menu_network ;;
+        4) menu_security ;;
+        5) menu_custom ;;
+        6) menu_automation ;;
+        7) menu_hardware ;;
+        8) menu_jarvis ;;
+        9) menu_files ;;
+        0) echo "Goodbye!"; log "Exited"; exit 0 ;;
+        *) echo "Invalid option."; read -p "Press Enter to continue..." ;;
     esac
 done
