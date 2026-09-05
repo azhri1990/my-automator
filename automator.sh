@@ -1,24 +1,44 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ==============================================
-# MY TERMUX AUTOMATOR – ULTIMATE EDITION v2.0
+# MY TERMUX AUTOMATOR – ULTIMATE EDITION v3.0
 # ==============================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="$SCRIPT_DIR/logs/automator.log"
 
-# --- Logging function ---
+# --- Logging ---
 log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
 }
 
-# --- Source all modules ---
+# --- Load all modules ---
 for mod in "$SCRIPT_DIR"/modules/*.sh; do
     if [ -f "$mod" ]; then
         source "$mod"
         log "Loaded module: $(basename "$mod")"
     fi
 done
+
+# --- Plugin system: load user scripts from ~/.automator_plugins/ ---
+PLUGIN_DIR="$HOME/.automator_plugins"
+if [ -d "$PLUGIN_DIR" ]; then
+    for plugin in "$PLUGIN_DIR"/*.sh; do
+        if [ -f "$plugin" ]; then
+            source "$plugin"
+            log "Loaded plugin: $(basename "$plugin")"
+        fi
+    done
+fi
+
+# --- Self-update ---
+self_update() {
+    echo "Checking for updates..."
+    cd "$SCRIPT_DIR" || return
+    git pull origin main
+    echo "✅ Updated. Restarting..."
+    exec "$SCRIPT_DIR/automator.sh"
+}
 
 # --- Main menu ---
 show_main_menu() {
@@ -35,12 +55,14 @@ show_main_menu() {
     echo "║  7. Hardware Control (Termux:API)            ║"
     echo "║  8. Jarvis Integration                       ║"
     echo "║  9. File & Media Utilities                   ║"
+    echo "║ 10. Advanced Features (AI, OCR, etc.)       ║"
+    echo "║ 11. Self‑Update (Git pull)                   ║"
     echo "║  0. Exit                                     ║"
     echo "╚═══════════════════════════════════════════════╝"
-    read -p "Choose an option [0-9]: " main_choice
+    read -p "Choose an option [0-11]: " main_choice
 }
 
-# --- Sub‑menus (each calls a function from the respective module) ---
+# --- Main loop ---
 while true; do
     show_main_menu
     case $main_choice in
@@ -53,6 +75,8 @@ while true; do
         7) menu_hardware ;;
         8) menu_jarvis ;;
         9) menu_files ;;
+        10) menu_advanced ;;
+        11) self_update ;;
         0) echo "Goodbye!"; log "Exited"; exit 0 ;;
         *) echo "Invalid option."; read -p "Press Enter to continue..." ;;
     esac
