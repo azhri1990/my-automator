@@ -1,0 +1,4 @@
+- model_id: infrad
+  model_name: deepseek-v4-flash
+  api_base: https://api.infr.ad/v1
+  api_key_name: infrad

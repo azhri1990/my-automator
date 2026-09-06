@@ -31,6 +31,61 @@ if [ -d "$PLUGIN_DIR" ]; then
     done
 fi
 
+# --- Get Current AI Model (Short) ---
+get_current_model() {
+    if [ -f ~/PocketStrike-AI/config.json ]; then
+        MODEL=$(grep -o '"model": "[^"]*"' ~/PocketStrike-AI/config.json | cut -d'"' -f4 2>/dev/null)
+        PROVIDER=$(grep -o '"ai_provider": "[^"]*"' ~/PocketStrike-AI/config.json | cut -d'"' -f4 2>/dev/null)
+        
+        if [ -z "$MODEL" ]; then
+            echo "⚠️  No model configured"
+        elif [ "$PROVIDER" = "ollama" ]; then
+            echo "🟢 Local: $MODEL"
+        elif [ "$PROVIDER" = "openai" ]; then
+            echo "🔵 Cloud: $MODEL"
+        else
+            echo "❓ $MODEL"
+        fi
+    else
+        echo "⚠️  Config not found"
+    fi
+}
+
+# --- Check Current AI Model (Detailed) ---
+check_current_model() {
+    clear
+    echo "╔═══════════════════════════════════════════════╗"
+    echo "║         CURRENT AI MODEL                      ║"
+    echo "╠═══════════════════════════════════════════════╣"
+    
+    if [ -f ~/PocketStrike-AI/config.json ]; then
+        MODEL=$(grep -o '"model": "[^"]*"' ~/PocketStrike-AI/config.json | cut -d'"' -f4 2>/dev/null)
+        PROVIDER=$(grep -o '"ai_provider": "[^"]*"' ~/PocketStrike-AI/config.json | cut -d'"' -f4 2>/dev/null)
+        BASE_URL=$(grep -o '"base_url": "[^"]*"' ~/PocketStrike-AI/config.json | cut -d'"' -f4 2>/dev/null)
+        
+        echo "║  🤖 Model:       $MODEL                         ║"
+        echo "║  📡 Provider:    $PROVIDER                      ║"
+        
+        if [ "$PROVIDER" = "ollama" ]; then
+            echo "║  🟢 Status:      Local (Offline, Private)    ║"
+        elif [ "$PROVIDER" = "openai" ]; then
+            echo "║  🔵 Status:      Cloud (API)                  ║"
+            echo "║  🌐 API Base:    $BASE_URL                    ║"
+        else
+            echo "║  ⚠️  Status:      Unknown                      ║"
+        fi
+        
+        echo "║  📁 Config:      ~/PocketStrike-AI/config.json  ║"
+    else
+        echo "║  ❌ Config file not found                       ║"
+        echo "║  💡 Run Jarvis Integration → Option 7 to start  ║"
+    fi
+    
+    echo "╚═══════════════════════════════════════════════╝"
+    echo ""
+    read -p "Press Enter to continue..."
+}
+
 # --- Self-update ---
 self_update() {
     echo "Checking for updates..."
@@ -46,6 +101,8 @@ show_main_menu() {
     echo "╔═══════════════════════════════════════════════╗"
     echo "║   MY TERMUX AUTOMATOR – ULTIMATE EDITION     ║"
     echo "╠═══════════════════════════════════════════════╣"
+    echo "║   🤖 $(get_current_model)                     ║"
+    echo "╠═══════════════════════════════════════════════╣"
     echo "║  1. System Info & Maintenance                ║"
     echo "║  2. Development Tools                        ║"
     echo "║  3. Networking Tools                         ║"
@@ -57,9 +114,10 @@ show_main_menu() {
     echo "║  9. File & Media Utilities                   ║"
     echo "║ 10. Advanced Features (AI, OCR, etc.)       ║"
     echo "║ 11. Self‑Update (Git pull)                   ║"
+    echo "║ 12. Check Current AI Model                   ║"
     echo "║  0. Exit                                     ║"
     echo "╚═══════════════════════════════════════════════╝"
-    read -p "Choose an option [0-11]: " main_choice
+    read -p "Choose an option [0-12]: " main_choice
 }
 
 # --- Main loop ---
@@ -77,6 +135,7 @@ while true; do
         9) menu_files ;;
         10) menu_advanced ;;
         11) self_update ;;
+        12) check_current_model ;;
         0) echo "Goodbye!"; log "Exited"; exit 0 ;;
         *) echo "Invalid option."; read -p "Press Enter to continue..." ;;
     esac

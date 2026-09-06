@@ -19,9 +19,10 @@ menu_advanced() {
         echo "║ 11. Automated APK Downloader                  ║"
         echo "║ 12. Command History Search (fzf)              ║"
         echo "║ 13. OCR (Image to Text)                       ║"
+        echo "║ 14. INFR.AD AI Chat (3 models)                ║"
         echo "║  0. Back to Main Menu                         ║"
         echo "╚═══════════════════════════════════════════════╝"
-        read -p "Choose an option [0-13]: " sub_choice
+        read -p "Choose an option [0-14]: " sub_choice
         case $sub_choice in
             1) ai_assistant ;;
             2) screen_recorder ;;
@@ -36,6 +37,7 @@ menu_advanced() {
             11) auto_apk_download ;;
             12) fzf_history ;;
             13) ocr_tool ;;
+            14) infr_chat_menu ;;
             0) break ;;
             *) echo "Invalid"; read -p "Press Enter..." ;;
         esac
@@ -234,5 +236,35 @@ ocr_tool() {
     else
         echo "File not found."
     fi
+    read -p "Press Enter to continue..."
+}
+
+# --- 14. INFR.AD AI Chat (New) ---
+infr_chat_menu() {
+    echo ""
+    echo "╔═══════════════════════════════════════════════╗"
+    echo "║         INFR.AD AI CHAT                       ║"
+    echo "╠═══════════════════════════════════════════════╣"
+    echo "║  1. deepseek-v4-flash (fast, 1M context)     ║"
+    echo "║  2. hy3 (strong reasoning, 262k context)     ║"
+    echo "║  3. gpt-5.6-luna (vision, capable)           ║"
+    echo "╚═══════════════════════════════════════════════╝"
+    read -p "Choose model [1-3]: " model_choice
+    
+    case $model_choice in
+        1) MODEL="deepseek-v4-flash" ;;
+        2) MODEL="hy3" ;;
+        3) MODEL="gpt-5.6-luna" ;;
+        *) echo "❌ Invalid choice"; read -p "Press Enter..."; return ;;
+    esac
+    
+    read -p "Enter your prompt: " PROMPT
+    echo ""
+    echo "🤖 Thinking... (press Ctrl+C to stop)"
+    echo ""
+    
+    ~/bin/infr_chat "$MODEL" "$PROMPT"
+    
+    echo ""
     read -p "Press Enter to continue..."
 }
