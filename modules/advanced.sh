@@ -657,3 +657,19 @@ core_ai_list() {
     echo ""
     read -p "Press Enter to continue..."
 }
+
+# --- 41. OpenCulture Courses ---
+openculture() {
+    echo "📚 1,700+ FREE Courses from Top Universities"
+    echo "https://www.openculture.com/freeonlinecourses"
+    termux-open https://www.openculture.com/freeonlinecourses
+    read -p "Press Enter to continue..."
+}
+
+# --- 42. RunwayML ---
+runwayml() {
+    echo "🎥 RunwayML - AI Content Creation"
+    echo "https://runwayml.com"
+    termux-open https://runwayml.com
+    read -p "Press Enter to continue..."
+}
