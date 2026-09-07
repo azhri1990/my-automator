@@ -609,3 +609,51 @@ list_all_apps_menu() {
     ~/bin/app_launcher_all list
     read -p "Press Enter to continue..."
 }
+
+# --- 39. Run Core AI Tool ---
+run_core_ai() {
+    echo "📋 Available AI tools:"
+    echo "  qwen, gemini, vibe, openclaude, claude, ollama, codex"
+    echo "  opencode, qoder, kilo, needle, cactus, goose, keelcode"
+    echo "  cursor, kimchi, mimocode, engram, codegraph, pi, agy"
+    echo "  mmx, gentle-ai, gga, hermes, kimi, cmdc, freebuff"
+    echo "  ctx7, openspec, supercode, cline, droid, amp, hf, walkie"
+    echo ""
+    read -p "Enter tool name: " tool
+    read -p "Enter command/query: " query
+    $tool "$query"
+    read -p "Press Enter to continue..."
+}
+
+# --- 40. Core AI Tools List ---
+core_ai_list() {
+    echo "📋 CORE AI TOOLS INSTALLED"
+    echo "============================"
+    echo "AI Models & Assistants:"
+    echo "  qwen      - Qwen Code AI"
+    echo "  gemini    - Google Gemini CLI"
+    echo "  vibe      - Mistral Vibe"
+    echo "  openclaude - OpenClaude"
+    echo "  claude    - Claude Code"
+    echo "  ollama    - Ollama (local models)"
+    echo "  codex     - Codex CLI"
+    echo ""
+    echo "Coding Agents:"
+    echo "  opencode  - OpenCode"
+    echo "  qoder     - Qoder"
+    echo "  kilo      - Kilo Code"
+    echo "  cursor    - Cursor CLI"
+    echo "  supercode - SuperCode"
+    echo "  opensec   - OpenSpec"
+    echo "  ctx7      - Context7"
+    echo ""
+    echo "Agent Frameworks:"
+    echo "  hermes    - Hermes Agent"
+    echo "  goose     - Goose CLI"
+    echo "  gga       - Git-GPT Agent"
+    echo "  gentle-ai - Gentle AI"
+    echo "  mmx       - Minimax CLI"
+    echo "  kimi      - Kimi Code"
+    echo ""
+    read -p "Press Enter to continue..."
+}
