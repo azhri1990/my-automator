@@ -541,3 +541,41 @@ infr_chat() {
         | grep -o '"content":"[^"]*"' | cut -d'"' -f4
 }
 
+
+# --- 32. Launch AI Chat App ---
+launch_ai_chat() {
+    ~/bin/ai_apps list
+    read -p "Enter app name: " app
+    ~/bin/ai_apps launch "$app"
+    read -p "Press Enter to continue..."
+}
+
+# --- 33. Launch Image App ---
+launch_image_app() {
+    ~/bin/image_apps list
+    read -p "Enter app name: " app
+    ~/bin/image_apps launch "$app"
+    read -p "Press Enter to continue..."
+}
+
+# --- 34. Launch Git App ---
+launch_git_app() {
+    ~/bin/git_apps list
+    read -p "Enter app name: " app
+    ~/bin/git_apps launch "$app"
+    read -p "Press Enter to continue..."
+}
+
+# --- 35. Launch Termux Tool ---
+launch_termux_tool() {
+    ~/bin/termux_tools list
+    read -p "Enter app name: " app
+    ~/bin/termux_tools launch "$app"
+    read -p "Press Enter to continue..."
+}
+
+# --- 36. App Launcher Menu ---
+app_launcher_menu() {
+    ~/bin/app_launcher
+    read -p "Press Enter to continue..."
+}
