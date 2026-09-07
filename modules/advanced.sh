@@ -579,3 +579,33 @@ app_launcher_menu() {
     ~/bin/app_launcher
     read -p "Press Enter to continue..."
 }
+
+# --- 37. Launch Any App ---
+launch_any_app() {
+    ~/bin/app_launcher_all list
+    echo ""
+    read -p "Enter app name: " app
+    ~/bin/app_launcher_all launch "$app"
+    read -p "Press Enter to continue..."
+}
+
+# --- 38. List All Apps ---
+list_all_apps_menu() {
+    ~/bin/app_launcher_all list
+    read -p "Press Enter to continue..."
+}
+
+# --- 37. Launch Any App ---
+launch_any_app() {
+    ~/bin/app_launcher_all list
+    echo ""
+    read -p "Enter app name: " app
+    ~/bin/app_launcher_all launch "$app"
+    read -p "Press Enter to continue..."
+}
+
+# --- 38. List All Apps ---
+list_all_apps_menu() {
+    ~/bin/app_launcher_all list
+    read -p "Press Enter to continue..."
+}
